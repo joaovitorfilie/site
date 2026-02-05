@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSLab Brasil Community - Domine o Jogo com Nossa Equipe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff902e;
+            --primary-dark: #e67e22;
+            --primary-light: #ffa94d;
+            --dark: #2f2d2e;
+            --darker: #1f1e1e;
+            --light: #f0f0f0;
+            --gray: #444;
+            --success: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--darker) 1px, transparent 1px) 0 0 / 40px 40px,
+                linear-gradient(0deg, var(--darker) 1px, transparent 1px) 0 0 / 40px 40px;
+            background-color: var(--dark);
+            opacity: 0.3;
+            z-index: -2;
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 144, 46, 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(255, 144, 46, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: rgba(31, 30, 30, 0.9);
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background-color: transparent;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: none;
+            overflow: visible;
+            border: 1px solid rgba(255,144,46,0.3);
+        }
+
+        .logo-icon img {
+            width: 56px; /* larger visual logo while container stays 50px */
+            height: 56px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-icon i {
+            font-size: 24px;
+            color: var(--darker);
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .nav-stats {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 85vh;
+            padding: 40px 5%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+        
+        .hero-title span {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title span::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            animation: titleUnderline 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleUnderline {
+            0% { transform: scaleX(0); transform-origin: right; }
+            100% { transform: scaleX(1); transform-origin: left; }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        /* Discord Button */
+        .discord-container {
+            position: relative;
+            margin: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .discord-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--darker);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            padding: 22px 50px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 144, 46, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 350px;
+        }
+        
+        .discord-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 144, 46, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .discord-btn:hover::before {
+            left: 100%;
+        }
+        
+        .discord-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .discord-btn i {
+            font-size: 2rem;
+        }
+        
+        .btn-pulse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            background: var(--primary);
+            z-index: -2;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 0; }
+        }
+        
+        .join-text {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .join-text i {
+            color: var(--success);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 5%;
+            background-color: rgba(31, 30, 30, 0.7);
+            margin: 40px 0;
+            border-radius: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--light);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(47, 45, 46, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 144, 46, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 144, 46, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .feature-desc {
+            color: #bbb;
+            line-height: 1.6;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-slider {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--dark);
+        }
+        
+        .testimonial-slider::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .testimonial-slider::-webkit-scrollbar-track {
+            background: var(--dark);
+            border-radius: 10px;
+        }
+        
+        .testimonial-slider::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        .testimonial-card {
+            min-width: 350px;
+            background: rgba(47, 45, 46, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 144, 46, 0.2);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--darker);
+        }
+        
+        .testimonial-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+        
+        .testimonial-rank {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-text {
+            color: #ccc;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        .testimonial-text i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+        
+        /* Countdown & CTA */
+        .countdown-section {
+            padding: 60px 5%;
+            text-align: center;
+            background: linear-gradient(rgba(31, 30, 30, 0.9), rgba(31, 30, 30, 0.9));
+            margin: 60px 0;
+            border-radius: 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(255, 144, 46, 0.3);
+        }
+        
+        .countdown-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-value {
+            width: 80px;
+            height: 80px;
+            background: var(--dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            border: 2px solid var(--primary);
+        }
+        
+        .countdown-label {
+            color: #aaa;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 40px 5%;
+            text-align: center;
+            background-color: rgba(20, 20, 20, 0.9);
+            border-top: 2px solid var(--primary);
+            margin-top: 80px;
+        }
+        
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .footer-text {
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+        
+        .footer-disclaimer {
+            color: #777;
+            font-size: 0.8rem;
+            margin-top: 30px;
+        }
+        
+        /* CS2 Elements */
+        .cs2-elements {
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .cs2-element {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 8rem;
+            color: var(--primary);
+        }
+        
+        .element-1 {
+            top: 10%;
+            left: 5%;
+            transform: rotate(-15deg);
+        }
+        
+        .element-2 {
+            top: 20%;
+            right: 8%;
+            transform: rotate(15deg);
+        }
+        
+        .element-3 {
+            bottom: 20%;
+            left: 8%;
+            transform: rotate(10deg);
+        }
+        
+        .element-4 {
+            bottom: 10%;
+            right: 5%;
+            transform: rotate(-10deg);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .nav-stats {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .discord-btn {
+                min-width: 300px;
+                font-size: 1.4rem;
+                padding: 18px 30px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+
+            /* Slightly smaller visual logo on medium screens */
+            .logo-icon img {
+                width: 48px;
+                height: 48px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .discord-btn {
+                min-width: 280px;
+                font-size: 1.2rem;
+                padding: 16px 25px;
+            }
+            
+            .countdown-value {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+
+            /* Smaller visual logo on small screens */
+            .logo-icon img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+    <div class="grid-overlay"></div>
+    
+    <!-- CS2 Elements -->
+    <div class="cs2-elements">
+        <div class="cs2-element element-1"><i class="fas fa-crosshairs"></i></div>
+        <div class="cs2-element element-2"><i class="fas fa-bomb"></i></div>
+        <div class="cs2-element element-3"><i class="fas fa-shield-alt"></i></div>
+        <div class="cs2-element element-4"><i class="fas fa-trophy"></i></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <img src="assets/Sem Título-1.png" alt="CSLab" />
+            </div>
+            <div class="logo-text">CSLab Brasil</div>
+        </div>
+        
+        <div class="nav-stats">
+            <div class="stat-item">
+                <div class="stat-number" id="onlineCount">—</div>
+                <div class="stat-label">Online Agora</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalMembers">—</div>
+                <div class="stat-label">Membros</div>
+            </div>
+</div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">Domine o <span>Counter-Strike 2</span> com a CSLab</h1>
+        <p class="hero-subtitle">
+            Uma <span class="highlight">comunidade nova de CS2</span> criada para quem quer encontrar pessoas para jogar em <span class="highlight">time fechado</span>, sem pressão, só jogo organizado e boa comunicação.
+        </p>
+        
+        <div class="discord-container">
+            <div class="btn-pulse"></div>
+            <a href="https://discord.gg/CxbgQet3Sr" target="_blank" class="discord-btn">
+                <i class="fab fa-discord"></i> Entrar na Comunidade
+            </a>
+            <p class="join-text">
+                <i class="fas fa-user-plus"></i> 
+                <span id="recentJoin">Carregando estatísticas...</span>
+            </p>
+        </div>
+    </section>
+    <!-- Features Section 
+    <section class="features">
+        <h2 class="section-title">O Que Oferecemos</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="feature-title">Torneios Semanais</h3>
+                <p class="feature-desc">
+                    Participe de torneios com premiação em dinheiro e skins. Competições para todos os níveis, 
+                    desde iniciantes até jogadores profissionais.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Scrims Organizadas</h3>
+                <p class="feature-desc">
+                    Sistema automatizado para encontrar scrims contra times do seu nível. 
+                    Melhore suas táticas em equipe em um ambiente competitivo.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="feature-title">Análise de Gameplay</h3>
+                <p class="feature-desc">
+                    Nossos treinadores analisam suas partidas e fornecem feedback detalhado 
+                    para corrigir erros e maximizar seu desempenho.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="feature-title">Workshops Especializados</h3>
+                <p class="feature-desc">
+                    Aulas sobre controle de recuo, posicionamento, economia, 
+                    calls e estratégias avançadas para todos os mapas competitivos.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3 class="feature-title">Sistema de Ranqueamento</h3>
+                <p class="feature-desc">
+                    Suba de nível em nosso sistema interno de ranqueamento, 
+                    desbloqueie recompensas exclusivas e prove seu valor.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="feature-title">Suporte 24/7</h3>
+                <p class="feature-desc">
+                    Equipe de moderadores sempre disponível para garantir um ambiente 
+                    respeitoso e competitivo para todos os membros.
+                </p>
+            </div>
+        </div>
+    </section> -->
+    
+    <!-- Testimonials
+    <section class="testimonials">
+        <h2 class="section-title">O Que Nossos Membros Dizem</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">VR</div>
+                    <div>
+                        <div class="testimonial-name">Vinicius "Rogue" Silva</div>
+                        <div class="testimonial-rank">Global CSLab | IGL Team Phoenix</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    <i class="fas fa-quote-left"></i>
+                    Graças aos torneios semanais da comunidade, minha equipe foi descoberta por uma organização 
+                    profissional. Em 6 meses, evoluímos do nível MG2 para competir em campeonatos nacionais.
+                </p>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">AS</div>
+                    <div>
+                        <div class="testimonial-name">Ana "Spectre" Santos</div>
+                        <div class="testimonial-rank">Faceit Level 10 | AWP Main</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    <i class="fas fa-quote-left"></i>
+                    Como jogadora feminina, encontrei um ambiente super respeitoso e acolhedor. 
+                    As workshops de awping mudaram completamente meu jogo. Minha taxa de HS aumentou 22% em 2 meses.
+                </p>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">LT</div>
+                    <div>
+                        <div class="testimonial-name">Lucas "Tactical" Oliveira</div>
+                        <div class="testimonial-rank">Ex-Silver, Atual DMG</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    <i class="fas fa-quote-left"></i>
+                    Estava preso no Silver por 2 anos. Em 3 meses na comunidade, com as análises de gameplay 
+                    e scrims organizadas, subi para DMG. Aprendi mais aqui do que em 2 anos jogando sozinho.
+                </p>
+            </div>
+        </div>
+    </section> -->
+    
+    <!-- Countdown & CTA 
+    <section class="countdown-section">
+        <h2 class="countdown-title">PRÓXIMO TORNEIO COM PREMIAÇÃO COMEÇA EM:</h2>
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <div class="countdown-value" id="days">03</div>
+                <div class="countdown-label">Dias</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="hours">12</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="minutes">45</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="seconds">22</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+        
+        <div class="discord-container">
+            <div class="btn-pulse"></div>
+            <a href="https://discord.gg/CxbgQet3Sr" target="_blank" class="discord-btn">
+                <i class="fab fa-discord"></i> Garantir Minha Vaga no Torneio
+            </a>
+            <p class="join-text">
+                <i class="fas fa-exclamation-circle"></i> 
+                <span>Vagas limitadas! Apenas os primeiros 32 times garantirão participação.</span>
+            </p>
+        </div>
+    </section> -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">CSLab Brasil COMMUNITY</div>
+        <p class="footer-text">
+           Comunidade de Counter-Strike 2 focada em reunir jogadores para jogar em time fechado de forma simples e organizada.
+        </p>
+        
+        <!-- <div class="discord-container">
+            <a href="https://discord.gg/CxbgQet3Sr" target="_blank" class="discord-btn" style="min-width: 300px;">
+                <i class="fab fa-discord"></i> Última Chance para Entrar Hoje
+            </a>
+        </div> -->
+        
+        <p class="footer-disclaimer">
+            Este site não é afiliado à Valve Corporation, Counter-Strike ou à Steam. 
+            Todas as marcas registradas são propriedade de seus respectivos donos.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const onlineCountEl = document.getElementById('onlineCount');
+            const totalMembersEl = document.getElementById('totalMembers');
+            const recentJoinEl = document.getElementById('recentJoin');
+
+            const setText = (el, text) => {
+                if (el) el.textContent = text;
+            };
+
+            async function loadStats() {
+                try {
+                    const res = await fetch('/api/stats', { cache: 'no-store' });
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+
+                    const online = Number(data.onlineMembers ?? 0);
+                    const members = Number(data.totalMembers ?? 0);
+                    const joinsToday = Number(data.joinsToday ?? 0);
+                    const joinsLast30 = Number(data.joinsLast30Days ?? 0);
+
+                    setText(onlineCountEl, online.toLocaleString('pt-BR'));
+                    setText(totalMembersEl, members.toLocaleString('pt-BR'));
+                    setText(
+                        recentJoinEl,
+                        `${joinsToday.toLocaleString('pt-BR')} pessoas entraram hoje • ` +
+                        `${joinsLast30.toLocaleString('pt-BR')} nos últimos 30 dias`
+                    );
+                } catch (err) {
+                    console.error('Falha ao carregar estatísticas:', err);
+                    setText(onlineCountEl, '—');
+                    setText(totalMembersEl, '—');
+                    setText(recentJoinEl, 'Não foi possível carregar as estatísticas agora.');
+                }
+            }
+
+            // Carrega ao abrir e atualiza de tempos em tempos
+            loadStats();
+            setInterval(loadStats, 15000);
+
+            // Efeito de digitação no título (mantido)
+            const titleElement = document.querySelector('.hero-title span');
+            if (titleElement) {
+                const originalText = titleElement.textContent;
+                titleElement.textContent = '';
+
+                let charIndex = 0;
+                function typeWriter() {
+                    if (charIndex < originalText.length) {
+                        titleElement.textContent += originalText.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeWriter, 80);
+                    } else {
+                        setInterval(() => {
+                            titleElement.style.opacity = titleElement.style.opacity === '0.7' ? '1' : '0.7';
+                        }, 1000);
+                    }
+                }
+
+                setTimeout(typeWriter, 300);
+            }
+
+            // Efeito de parallax no grid background
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const gridBg = document.querySelector('.grid-bg');
+                if (gridBg) gridBg.style.backgroundPosition = `0 ${scrolled * 0.5}px`;
+            });
+
+            // Animar cards ao rolar (se existirem)
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.feature-card').forEach((card) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+
+</body>
+</html>

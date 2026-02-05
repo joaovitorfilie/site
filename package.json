@@ -1,0 +1,15 @@
+{
+  "name": "discord-stats-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start:bot": "node index.js",
+    "start:site": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0"
+  }
+}
